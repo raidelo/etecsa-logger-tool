@@ -47,6 +47,7 @@ class EtecsaLogger():
                       'Entre el nombre de usuario y contraseña correctos.', # Cuenta nacional. Usuario incorrecto.
                       'El nombre de usuario o contraseña son incorrectos.', # Cuenta internacional. Usuario correcto y contraseña incorrecta.
                       'Su estado de cuenta es anormal.',                    # Muchos intentos.
+                      'Usted ha realizado muchos intentos. Por favor intente más tarde.', # Muchos intentos
                       ]
 
     def __init__(self):
