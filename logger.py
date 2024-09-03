@@ -419,14 +419,14 @@ class EtecsaLogger():
              'ATTRIBUTE_ID': self.attribute_uuid,
              'Momento de inicio de sesión': self.session_start_time,
              'Tiempo restante al momento de iniciar sesión': self.initial_left_time,
-             'Tipo de conexión: ': self.connection_type.capitalize() if self.connection_type else None,
+             'Tipo de conexión': self.connection_type.capitalize() if self.connection_type else None,
              }
         for i in d:
             data += '%s: %s\n'%(i, d[i])
-        data = data.strip('\n')
-        bar = ''.join(['#' for i in range(16)])
-        cmsg = bar+'CONFIGURACIÓN'+bar
-        config_msg = '%s\n%s\n\n%s' %(cmsg,data,''.join('#' for i in range(len(cmsg))))
+        bar_width = 18
+        word = ' CONFIGURACIÓN '
+        first_line = word.rjust(len(word)+bar_width, '#').ljust(len(word)+bar_width*2, '#')
+        config_msg = '{first_line}\n{content}\n{last_line}'.format(first_line=first_line, content=data, last_line='#'*len(first_line))
         return config_msg
 
 #################################################################### MAIN ####################################################################
