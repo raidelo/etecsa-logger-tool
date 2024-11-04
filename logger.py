@@ -48,6 +48,7 @@ class EtecsaLogger():
                       'El nombre de usuario o contraseña son incorrectos.', # Cuenta internacional. Usuario correcto y contraseña incorrecta.
                       'Su estado de cuenta es anormal.',                    # Muchos intentos.
                       'Usted ha realizado muchos intentos. Por favor intente más tarde.', # Muchos intentos
+                      'El sistema está ocupado. Inténtelo de nuevo más tarde.', # Sistema ocupado
                       ]
 
     def __init__(self):
@@ -282,8 +283,16 @@ class EtecsaLogger():
                                          allow_redirects=True
                                          )
                 exception = 0
-            except requests.exceptions.ConnectionError:
-                to_print = 'Hubo un error al realizar la petición. Inténtelo de nuevo.'
+            
+            except requests.exceptions.ConnectionError as e:
+
+                if isinstance(e, requests.exceptions.SSLError):
+                    to_print = 'Hubo un error al establecer la conexión SSL/TLS con el servidor.'
+                else:
+                    to_print = 'Hubo un error al realizar la petición.'
+
+                to_print += ' Inténtelo de nuevo.'
+
             except requests.exceptions.Timeout:
                 to_print = 'El servidor no respondió en un tiempo dado.'
             
@@ -325,10 +334,18 @@ class EtecsaLogger():
                                                allow_redirects=True
                                                )
                 exception = 0
-            except requests.exceptions.ConnectionError:
-                to_print = 'Hubo un error al realizar la petición. Inténtelo de nuevo.'
+            except requests.exceptions.ConnectionError as e:
+
+                if isinstance(e, requests.exceptions.SSLError):
+                    to_print = 'Hubo un error al establecer la conexión SSL/TLS con el servidor.'
+                else:
+                    to_print = 'Hubo un error al realizar la petición.'
+
+                to_print += ' Inténtelo de nuevo.'
+
             except requests.exceptions.Timeout:
                 to_print = 'El servidor no respondió en un tiempo dado.'
+
             if not exception:
                 #self.__html(response.content, save=False) # For debugging
                 actual_time = self.get_left_time()
